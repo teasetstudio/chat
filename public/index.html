@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebSocket Chat</title>
+</head>
+<body>
+  <h1>WebSocket Chat</h1>
+  <div id="chat"></div>
+
+  <!-- Add a target user input field -->
+  <label for="targetUsername">Private message to:</label>
+  <input type="text" id="targetUsername" placeholder="Enter target username...">
+  
+  <input type="text" id="messageInput" placeholder="Type your message...">
+  <button onclick="sendMessage()">Send</button>
+
+  <script>
+    const socket = new WebSocket('ws://localhost:3000');
+    let username = prompt('Enter your username:');
+
+    socket.addEventListener('open', () => {
+      // Send the username to the server upon connection
+      socket.send(JSON.stringify({
+        type: 'join',
+        username: username,
+      }));
+    });
+
+    socket.addEventListener('message', (event) => {
+      const data = JSON.parse(event.data);
+
+      switch (data.type) {
+        case 'notification':
+          appendMessage(`<em>${data.content}</em>`);
+          break;
+        case 'message':
+          appendMessage(`<strong>${data.username}:</strong> ${data.content}`);
+          break;
+        case 'privateMessage':
+          appendMessage(`<strong>${data.senderUsername} (private):</strong> ${data.content}`);
+          break;
+        default:
+          break;
+      }
+    });
+
+    function sendMessage() {
+      const messageInput = document.getElementById('messageInput');
+      const targetUsernameInput = document.getElementById('targetUsername');
+      const message = messageInput.value.trim();
+      const targetUsername = targetUsernameInput.value.trim();
+
+      if (message !== '' && targetUsername !== '') {
+        // Display the sent private message for the sender
+        appendMessage(`<strong>You (private to ${targetUsername}):</strong> ${message}`);
+
+        // Send the private message to the server
+        socket.send(JSON.stringify({
+          type: 'privateMessage',
+          content: message,
+          targetUsername: targetUsername,
+          username: username,
+        }));
+
+        // Clear input fields
+        messageInput.value = '';
+        targetUsernameInput.value = '';
+      }
+    }
+
+
+    function appendMessage(message) {
+      const chatDiv = document.getElementById('chat');
+      const messageDiv = document.createElement('div');
+      messageDiv.innerHTML = message;
+      chatDiv.appendChild(messageDiv);
+    }
+  </script>
+</body>
+</html>
