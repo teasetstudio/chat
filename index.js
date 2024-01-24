@@ -89,6 +89,6 @@ function sendPrivateMessage(ws, data) {
 }
 
 
-server.listen(3000, () => {
-  console.log('Server listening on http://localhost:3000');
+server.listen(5500, () => {
+  console.log('Server listening on http://localhost:5500');
 });

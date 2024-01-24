@@ -17,7 +17,7 @@
   <button onclick="sendMessage()">Send</button>
 
   <script>
-    const socket = new WebSocket('ws://localhost:3000');
+    const socket = new WebSocket('ws://localhost:5500');
     let username = prompt('Enter your username:');
 
     socket.addEventListener('open', () => {
