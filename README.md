@@ -1,9 +1,7 @@
 Start Dev
 npm run start:dev
 
-Start prod
-npm run start
-
+[FOR PROD]
 Build the Docker image:
 docker build -t chat .
 
