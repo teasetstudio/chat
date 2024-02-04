@@ -88,6 +88,6 @@ function sendPrivateMessage(ws, data) {
   }
 }
 
-server.listen(5500, () => {
-  console.log('Server listening on http://localhost:5500');
+server.listen(1050, () => {
+  console.log('Server listening on http://localhost:1050');
 });
