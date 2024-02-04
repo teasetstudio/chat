@@ -14,7 +14,7 @@ RUN npm install --omit=dev
 COPY . .
 
 # Expose the port the app runs on
-EXPOSE 5500
+EXPOSE 1050
 
 # Define environment variable (optional, if needed)
 # ENV NODE_ENV production
